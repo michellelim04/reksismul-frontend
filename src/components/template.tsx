@@ -1,4 +1,4 @@
-import { ReactNode, MouseEventHandler, useEffect } from "react";
+import { ReactNode, MouseEventHandler, useEffect, useRef } from "react";
 import { VscThreeBars } from "react-icons/vsc";
 import { Poppins } from "next/font/google";
 import { useAppSelector, useAppDispatch } from "root/redux/hooks";
@@ -44,7 +44,20 @@ const Template = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<>
-			<header className="bg-[#2E4F4F] w-screen min-h-20 flex flex-row align-middle justify-between p-3">
+			<div
+				className={`${
+					poppins.className
+				} flex flex-col align-middle justify-center text-center text-white rounded-r-2xl fixed inset-y-0 left-0 z-50 w-64 h-[95%] bg-[#2E4F4F] overflow-y-auto transform transition-transform ease-in-out duration-300 ${
+					sidebarState ? "translate-x-0" : "-translate-x-full"
+				}`}
+			>
+				<h1>This is the sidebar</h1>
+			</div>
+			<header
+				className={`bg-[#2E4F4F] w-screen min-h-20 flex flex-row align-middle justify-between p-3 ${
+					sidebarState && "opacity-50"
+				} transition-opacity duration-500 ease-in-out`}
+			>
 				<VscThreeBars
 					size={40}
 					color="#FFFFFF"
@@ -61,7 +74,18 @@ const Template = ({ children }: { children: ReactNode }) => {
 					Logout
 				</button>
 			</header>
-			<main>{children}</main>
+			<main
+				className={
+					("bg-white " +
+						(sidebarState &&
+							"opacity-50 transition-opacity duration-500 ease-in-out")) as string
+				}
+				onClick={() => {
+					if (sidebarState) dispatch(toggleSidebar());
+				}}
+			>
+				{children}
+			</main>
 		</>
 	);
 };

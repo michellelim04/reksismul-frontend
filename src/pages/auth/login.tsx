@@ -8,7 +8,7 @@ export default function Home() {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	return (
-		<section className="min-h-screen flex flex-col align-middle justify-center text-center">
+		<section className="min-h-screen flex flex-col align-middle justify-center text-center bg-white">
 			<h1>Login</h1>
 			<button
 				onClick={() => {
