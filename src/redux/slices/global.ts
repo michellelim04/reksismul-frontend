@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const globalSlice = createSlice({
 	name: "globals",
 	initialState: {
-		loggedIn: true,
+		loggedIn: false,
 		sidebar: false,
 	},
 	reducers: {

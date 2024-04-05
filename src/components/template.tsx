@@ -24,12 +24,13 @@ const Template = ({ children }: { children: ReactNode }) => {
 	};
 	const logoutUser: MouseEventHandler<HTMLButtonElement> = (e) => {
 		e.preventDefault();
+		localStorage.removeItem("token");
 		dispatch(logout());
 	};
 
 	useEffect(() => {
 		if (!loggedInState) {
-			router.replace("/login");
+			setTimeout(() => router.replace("/auth/login"), 1500);
 			return;
 		}
 	}, [loggedInState, router]);
@@ -37,7 +38,7 @@ const Template = ({ children }: { children: ReactNode }) => {
 	if (!loggedInState)
 		return (
 			<section className="h-screen w-screen flex flex-col align-middle justify-center text-center">
-				<h1>Redirecting to login page</h1>
+				<h1 className={poppins.className}>Redirecting to login page</h1>
 			</section>
 		);
 
