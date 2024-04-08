@@ -4,7 +4,7 @@ import Template from "root/components/template";
 export default function Home() {
 	return (
 		<Template>
-			<section className="w-screen min-h-screen flex flex-col align-middle justify-center text-center">
+			<section className="min-h-screen flex flex-col align-middle justify-center text-center">
 				<h1>Hello World</h1>
 			</section>
 		</Template>
