@@ -22,18 +22,8 @@ const globalSlice = createSlice({
 	name: "globals",
 	initialState,
 	reducers: {
-		login: (
-			state,
-			action: PayloadAction<{
-				id: string;
-				email: string;
-				full_name: string;
-				role: "STUDENT" | "INSTRUCTOR" | "ADMIN";
-			}>
-		) => {
-			toast.success("Logged in!");
+		login: (state) => {
 			state.loggedIn = true;
-			state.user_metadata = action.payload;
 		},
 		logout: (state) => {
 			state.loggedIn = false;

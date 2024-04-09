@@ -1,4 +1,4 @@
-import { login } from "root/redux/slices/global";
+import { login, setUser } from "root/redux/slices/global";
 import { useAppDispatch } from "root/redux/hooks";
 import { useRouter } from "next/router";
 import { MouseEventHandler, useState } from "react";
@@ -48,8 +48,9 @@ export default function Home() {
 					full_name: responseJson.data.user.user_metadata.full_name,
 					role: responseJson.data.user.user_metadata.role,
 				};
-
-				dispatch(login(user_metadata));
+				dispatch(setUser(user_metadata));
+				dispatch(login());
+				toast.success("Logged in!");
 				router.push("/");
 				return;
 			})
@@ -66,7 +67,7 @@ export default function Home() {
 			}
 		>
 			<form
-				className="flex flex-col align-middle justify-evenly bg-white px-7 py-12 gap-5 rounded-3xl"
+				className="flex flex-col align-middle justify-evenly bg-white px-7 py-12 gap-5 rounded-3xl mx-auto md:w-[500px]"
 				onSubmit={handleLogin}
 			>
 				<h1>Login to your account</h1>
