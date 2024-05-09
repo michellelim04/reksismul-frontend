@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AssignmentType } from "root/types/assignmentType";
 
 interface CardTableProps {
@@ -26,12 +27,12 @@ const CardTable: React.FC<CardTableProps> = ({ data }) => {
             ? "0"
             : data.jumlahSubmission}
         </p>
-        <a
-          href="#"
+        <Link
+          href={`/assignment/submission/${data.assignmentID}?title=${data.namaAssignment}&timeDeadline=${data.timeDeadline}&dateDeadline=${data.dateDeadline}`}
           className="bg-[#2E4F4F] hover:bg-[#233b3b] px-5 py-2 rounded-full text-white font-semibold"
         >
           See More
-        </a>
+        </Link>
       </div>
     </div>
   );

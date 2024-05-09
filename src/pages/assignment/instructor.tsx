@@ -12,6 +12,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
 import { Poppins } from "next/font/google";
+import Link from "next/link";
 
 
 const poppinsB = Poppins({
@@ -199,12 +200,12 @@ export default function InstuctorPage() {
                   <td className="p-3 text-center align-middle">{assign.dateDeadline}</td>
                   <td className="p-3 text-center align-middle">{assign.timeDeadline}</td>
                   <td className="p-3 text-center align-middle">
-                    <a
-                      href="#"
-                      className={`${poppinsB.className} text-white bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-3 shadow shadow-md`}
+                    <Link
+                      href={`/assignment/submission/${assign.assignmentID}?title=${assign.namaAssignment}&timeDeadline=${assign.timeDeadline}&dateDeadline=${assign.dateDeadline}`}
+                      className={`${poppinsB.className} text-white bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-3 shadow-md`}
                     >
                       See More
-                    </a>
+                    </Link>
                   </td>
                 </tr>
               ))}

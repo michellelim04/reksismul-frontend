@@ -179,7 +179,7 @@ const Template = ({ children }: { children: ReactNode }) => {
       </div>
       {/* This is the header for the mobile page */}
       <header
-        className={`bg-[#2E4F4F] w-full min-h-20 flex flex-row align-middle justify-between p-3 md:hidden ${
+        className={`bg-[#2E4F4F] w-full min-h-20 sticky top-0 flex flex-row align-middle justify-between p-3 md:hidden ${
           sidebarState && "opacity-50"
         } transition-opacity duration-500 ease-in-out`}
       >
@@ -199,10 +199,11 @@ const Template = ({ children }: { children: ReactNode }) => {
           Logout
         </button>
       </header>
+
       {/* This is the main content for the mobile page */}
       <main
         className={
-          ("bg-white md:hidden " +
+          ("bg-white md:hidden h-screen " +
             (sidebarState &&
               "opacity-50 transition-opacity duration-500 ease-in-out")) as string
         }
@@ -213,7 +214,7 @@ const Template = ({ children }: { children: ReactNode }) => {
         {children}
       </main>
 
-      <div className="flex flex-row align-middle justify-between bg-white min-h-screen">
+      <div className="hidden md:flex flex-row align-middle justify-between bg-white min-h-screen">
         {/* This is the sidebar for the desktop page */}
         <div
           className={`flex-col px-10 py-16 text-white rounded-r-2xl z-50 w-[400px] bg-[#2E4F4F] overflow-y-auto transform transition-transform ease-in-out duration-300 hidden md:flex`}
