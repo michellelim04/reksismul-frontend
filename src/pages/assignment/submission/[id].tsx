@@ -120,7 +120,7 @@ const DetailSubmission = () => {
                         {
                             listAssigment.length <= 0 ?
                                 <div className="flex w-full justify-center">
-                                    <span className="font-semibold my-2">Data not avaliable now !</span>
+                                    <span className="font-semibold my-2">Data not available !</span>
                                 </div>
                             :
                             listAssigment.length > 0 &&
