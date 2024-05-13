@@ -52,7 +52,13 @@ export default function Home() {
         dispatch(setUser(user_metadata));
         dispatch(login());
         toast.success("Logged in!");
-        router.push("/");
+        if (user_metadata.role == "STUDENT") {
+          router.push("/assignment/student");
+        } else if (user_metadata.role == "INSTRUCTOR") {
+          router.push("/assignment/instructor");
+        } else {
+          router.push("/");
+        }
         return;
       })
       .catch(() => {

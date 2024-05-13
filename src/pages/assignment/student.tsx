@@ -1,4 +1,5 @@
 import Template from "root/components/template";
+import { useRouter } from "next/router";
 import { Poppins } from "next/font/google";
 import { useEffect, useState, MouseEventHandler } from "react";
 import { toast } from "react-toastify";
@@ -26,6 +27,7 @@ const poppinsXB = Poppins({
 });
 
 export default function Student() {
+  const router = useRouter();
   const [assignments, setAssignments] = useState<AssignmentType[]>([]);
   const pageSize = 5;
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,6 +36,10 @@ export default function Student() {
     return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
   }
 
+  const handleSeeMore: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const id = e.currentTarget.value;
+    router.push("/assignment/answer/" + id);
+  };
   const handlePage: MouseEventHandler<HTMLButtonElement> = (e) => {
     const direction = e.currentTarget.value;
     if (direction === "Previous") {
@@ -128,6 +134,8 @@ export default function Student() {
                 </div>
                 <button
                   className={`${poppinsB.className} text-white text-xs bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-2 shadow shadow-md`}
+                  onClick={handleSeeMore}
+                  value={row.assignmentID}
                 >
                   See More
                 </button>
@@ -178,6 +186,8 @@ export default function Student() {
                     <td className="p-3">
                       <button
                         className={`${poppinsB.className} text-white bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-3 shadow shadow-md`}
+                        onClick={handleSeeMore}
+                        value={row.assignmentID}
                       >
                         See More
                       </button>
@@ -189,7 +199,7 @@ export default function Student() {
           </table>
         </div>
 
-        <div className="bg-white flex flex-row space-x-10 justify-center items-center">
+        <div className="bg-white flex flex-row space-x-10 justify-center items-center pb-10">
           <button
             onClick={handlePage}
             value={"Previous"}
