@@ -1,7 +1,8 @@
 import Template from "root/components/template";
 import { Poppins } from "next/font/google";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEventHandler } from "react";
 import { toast } from "react-toastify";
+import { AssignmentType } from "root/types/assignmentType";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -24,8 +25,24 @@ const poppinsXB = Poppins({
   weight: ["800"],
 });
 
-export default function Home() {
-  const [assignments, setAssignments] = useState([]);
+export default function Student() {
+  const [assignments, setAssignments] = useState<AssignmentType[]>([]);
+  const pageSize = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  function page(array: AssignmentType[], pageSize: number, pageNumber: number) {
+    pageNumber--;
+    return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
+  }
+
+  const handlePage: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const direction = e.currentTarget.value;
+    if (direction === "Previous") {
+      setCurrentPage(currentPage - 1);
+    } else if (direction === "Next") {
+      setCurrentPage(currentPage + 1);
+    }
+    window.scrollTo(0, 0);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -46,23 +63,27 @@ export default function Home() {
       const responsejson = await response.json();
       setAssignments(responsejson.data);
     });
-  });
+  }, []);
+
   return (
-    <>
+    <div className="min-h-screen bg-white">
       <Template>
         {/* mobile */}
-        <div className="md:hidden min-h-screen flex flex-col justify-start p-10">
+        <div className="md:hidden bg-white flex flex-col justify-start p-10">
           <h1
-            className={`${poppinsXB.className} mb-10 text-2xl md:text-4xl text-left`}
+            className={`${poppinsXB.className} mb-5 text-2xl md:text-4xl text-left`}
           >
             All Assignments
           </h1>
-          {assignments.map((row, index) => {
+          <p className={poppins.className}>
+            You have {assignments.length} assignments.
+          </p>
+          {page(assignments, pageSize, currentPage).map((row, index) => {
             const dateStart = new Date(row.dateStart);
             const dateEnd = new Date(row.dateDeadline);
             return (
               <div
-                className="max-w-sm flex flex-col bg-[#CBE4DE] rounded-lg p-3 shadow shadow-md mb-8"
+                className="max-w-sm flex flex-col bg-[#CBE4DE] rounded-lg p-3 shadow shadow-md mt-5"
                 key={row.assignmentID}
               >
                 <div
@@ -79,10 +100,7 @@ export default function Home() {
                       {dateStart.getDate()}-{dateStart.getMonth() + 1}-
                       {dateStart.getFullYear()}
                     </p>
-                    <p className="font-bold">
-                      {row.timeStart.substring(0, 2)}
-                      {row.timeStart.substring(2, 5)}
-                    </p>
+                    <p className="font-bold">{row.timeStart.substring(0, 5)}</p>
                   </div>
                   <div className="w-px bg-[#2E4F4F]"></div>
                   <div className={`${poppins.className} w-1/2 my-3`}>
@@ -92,8 +110,7 @@ export default function Home() {
                       {dateEnd.getFullYear()}
                     </p>
                     <p className="font-bold">
-                      {row.timeDeadline.substring(0, 2)}
-                      {row.timeDeadline.substring(2, 5)}
+                      {row.timeDeadline.substring(0, 5)}
                     </p>
                   </div>
                 </div>
@@ -120,13 +137,16 @@ export default function Home() {
         </div>
 
         {/* desktop */}
-        <div className="min-h-screen md:flex flex-col justify-start p-10">
+        <div className="hidden md:flex flex-col justify-start p-10">
           <h1
-            className={`${poppinsXB.className} mb-10 text-2xl md:text-4xl text-left`}
+            className={`${poppinsXB.className} mb-5 text-2xl md:text-4xl text-left`}
           >
             All Assignments
           </h1>
-          <table className="table-fixed text-center text-xs md:text-sm">
+          <p className={poppins.className}>
+            You have {assignments.length} assignments.
+          </p>
+          <table className="table-fixed text-center text-xs md:text-sm mt-5">
             <thead className={`${poppinsB.className} text-white bg-[#0E8388]`}>
               <tr>
                 <th className="p-3 rounded-s-lg">#</th>
@@ -141,11 +161,13 @@ export default function Home() {
               </tr>
             </thead>
             <tbody className={poppins.className}>
-              {assignments.map((row, index) => {
+              {page(assignments, pageSize, currentPage).map((row, index) => {
                 const rowbg = index % 2 === 0 ? "bg-white" : "bg-[#CBE4DE]";
                 return (
                   <tr className={rowbg} key={row.assignmentID}>
-                    <td className="p-3">{index + 1}.</td>
+                    <td className="p-3">
+                      {index + 1 + (currentPage - 1) * pageSize}.
+                    </td>
                     <td className="p-3">{row.judulAssignment}</td>
                     <td className="p-3">{row.dateStart}</td>
                     <td className="p-3">{row.timeStart}</td>
@@ -166,7 +188,27 @@ export default function Home() {
             </tbody>
           </table>
         </div>
+
+        <div className="bg-white flex flex-row space-x-10 justify-center items-center">
+          <button
+            onClick={handlePage}
+            value={"Previous"}
+            disabled={currentPage === 1}
+            className={`${poppinsB.className} w-min text-white bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-3 shadow shadow-md`}
+          >
+            Previous
+          </button>
+          <p className={poppins.className}>Page {currentPage}</p>
+          <button
+            onClick={handlePage}
+            value={"Next"}
+            disabled={currentPage * pageSize >= assignments.length}
+            className={`${poppinsB.className} w-min text-white bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-3 shadow shadow-md`}
+          >
+            Next
+          </button>
+        </div>
       </Template>
-    </>
+    </div>
   );
 }

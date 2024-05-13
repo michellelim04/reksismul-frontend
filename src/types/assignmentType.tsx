@@ -1,5 +1,3 @@
-import { LargeNumberLike } from "crypto";
-
 export type AssignmentType = {
   assignmentID: string;
   namaAssignment: string;
