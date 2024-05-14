@@ -101,9 +101,11 @@ const DetailSubmission = () => {
                                             <td className="p-3 text-center align-middle">
                                                 {
                                                     e.submission !== undefined ?
+                                                        <a href={`/assignment/submission/transcript/${e.submission.submission_id}`}>
                                                         <button className={`${poppinsB.className} text-white bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-3 shadow-md`}>
                                                             Review
                                                         </button>
+                                                        </a>
                                                     :
                                                         ""
                                                 }
