@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import Template from "root/components/template";
 import { Poppins } from "next/font/google";
 import { AssignmentType } from "root/types/assignmentType";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import moment from "moment-timezone";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,8 +27,9 @@ const poppinsXB = Poppins({
   weight: ["800"],
 });
 
-export default function Answer() {
+export default function Record() {
   const [assignment, setAssignment] = useState<AssignmentType>();
+  const params = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function Answer() {
     }
 
     const detailAssigment = () => {
-      fetch("http://localhost:3333/v1/assignment/list/" + router.query.id, {
+      fetch("http://localhost:3333/v1/assignment/list/" + params.get("id"), {
         method: "GET",
         headers: {
           Authorization: token,
@@ -49,32 +50,16 @@ export default function Answer() {
           toast.error("Failed to retrieve items");
           return;
         }
+
         const responseJson = await response.json();
-        const result = responseJson.data[0];
-
-        if (result !== undefined) {
-          const currentDate = moment();
-          const endDate = moment(
-            result.dateDeadline + " " + result.timeDeadline
-          );
-          const startDate = moment(result.dateStart + " " + result.timeStart);
-
-          const diffTime = endDate.diff(currentDate, "minutes");
-          const diffTimeStart = startDate.diff(currentDate, "minutes");
-
-          if (diffTimeStart < 0 && diffTime > 0) {
-            setAssignment(result);
-          } else {
-            router.push(`/assignment/answer/closed?id=${router.query.id}`);
-          }
-        }
+        setAssignment(responseJson.data[0]);
       });
     };
 
-    if (router.query.id) {
+    if (params.get("id")) {
       detailAssigment();
     }
-  }, [router.query.id]);
+  }, [params.get("id")]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -84,10 +69,10 @@ export default function Answer() {
             Answer Assignment
           </h1>
           <button
-            className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow shadow-md`}
-            onClick={() => router.push("/assignment/student")}
+            className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md`}
+            onClick={() => router.push(`/assignment/student`)}
           >
-            Cancel
+            Done
           </button>
         </div>
         <div className="m-10 md:mr-20 rounded-3xl border border-[#0E8388]">
@@ -125,39 +110,40 @@ export default function Answer() {
               <div className="flex h-[400px] bg-gray-200 items-center justify-center w-full">
                 <p>Video</p>
               </div>
-              <div className="flex border border-gray-500 rounded-md h-[40px] items-center justify-center my-3">
-                <p className="text-xs">Camera used</p>
-              </div>
             </div>
-            <div className={`flex w-full md:w-3/12 items-center`}>
-              <div className="flex w-full items-center flex-row md:flex-col justify-between md:justify-center">
-                <div className="flex mx-0 md:mx-2 my-3">
-                  <button
-                    className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-[100px] md:w-[120px]`}
-                    onClick={() => router.push("/assignment/student")}
-                  >
-                    <span className="text-xs md:text-md">Start</span>
-                  </button>
+            <div className={`flex w-full my-3 md:my-0 md:w-3/12 items-center`}>
+              <div className="flex bg-white md:ml-3 w-full h-full flex-col p-3 shadow-md border border-gray-500 rounded-lg">
+                <div className="flex w-full">
+                  <div className="flex w-full">
+                    <span className="text-lg">Score</span>
+                  </div>
+                  <div className="flex w-full justify-end">
+                    <span className="text-lg text-green-700 font-medium">
+                      100
+                    </span>
+                  </div>
                 </div>
-                <div className="flex mx-0 md:mx-2 my-3">
-                  <button
-                    className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-[100px] md:w-[120px]`}
-                    onClick={() => router.push("/assignment/student")}
-                  >
-                    <span className="text-xs md:text-md">Stop</span>
-                  </button>
+                <div className="flex w-full my-2">
+                  <div className="flex w-full">
+                    <span className="text-xs">Status</span>
+                  </div>
+                  <div className="flex w-full justify-end">
+                    <span className="text-xs text-green-700 font-medium">
+                      Granted
+                    </span>
+                  </div>
                 </div>
-                <div className="flex mx-0 md:mx-2 my-3">
-                  <button
-                    className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-[100px] md:w-[120px]`}
-                    onClick={() =>
-                      router.push(
-                        `/assignment/answer/upload?id=${router.query.id}`
-                      )
-                    }
-                  >
-                    <span className="text-xs md:text-md">Upload</span>
-                  </button>
+                <div className="flex w-full flex-col">
+                  <div className="flex w-full">
+                    <span className="text-xs">Feedback</span>
+                  </div>
+                  <div className="flex w-full mt-2">
+                    <textarea
+                      className="border border-gray-400 w-full  h-full p-2 text-xs"
+                      placeholder="Enter description"
+                      value="Good !"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
