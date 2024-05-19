@@ -114,7 +114,7 @@ const FeedbackAssignment = () => {
           <div className="md:w-2/3 bg-gray-100 p-5 h-[60vh]">
             {/* Video box */}
           </div>
-          <div className="md:w-1/3 bg-white rounded-lg shadow-lg p-5 ml-0 md:ml-5 mt-5 md:mt-0 h-64 flex flex-col justify-start items-center">
+          <div className="md:w-1/3 bg-white rounded-lg shadow-lg p-5 ml-0 md:ml-5 mt-5 md:mt-0 flex flex-col justify-start items-center">
             {editScore ? (
               <>
                 <button
