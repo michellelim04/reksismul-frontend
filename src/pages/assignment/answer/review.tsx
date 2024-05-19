@@ -31,7 +31,7 @@ export default function Record() {
   const [assignment, setAssignment] = useState<AssignmentType>();
   const params = useSearchParams();
   const router = useRouter();
-  const [detailSubmission, setDetailSubmission] = useState<any>({})
+  const [detailSubmission, setDetailSubmission] = useState<any>({});
 
   const getDataDetailSubmission = async (id: string) => {
     try {
@@ -80,7 +80,7 @@ export default function Record() {
 
     if (params.get("id")) {
       detailAssigment();
-      getDataDetailSubmission(params.get("submissionId") as string)
+      getDataDetailSubmission(params.get("submissionId") as string);
     }
   }, [params.get("id")]);
 
@@ -135,9 +135,10 @@ export default function Record() {
               </div>
             </div>
 
-            {
-              Object.keys(detailSubmission).length > 0 &&
-              <div className={`flex w-full my-3 md:my-0 md:w-3/12 items-center`}>
+            {Object.keys(detailSubmission).length > 0 && (
+              <div
+                className={`flex w-full my-3 md:my-0 md:w-3/12 items-center`}
+              >
                 <div className="flex bg-white md:ml-3 w-full h-full flex-col p-3 shadow-md border border-gray-500 rounded-lg">
                   <div className="flex w-full">
                     <div className="flex w-full">
@@ -145,7 +146,9 @@ export default function Record() {
                     </div>
                     <div className="flex w-full justify-end">
                       <span className="text-lg text-green-700 font-semibold">
-                        {detailSubmission.score !== null ? detailSubmission.score : "-"}
+                        {detailSubmission.score !== null
+                          ? detailSubmission.score
+                          : "-"}
                       </span>
                     </div>
                   </div>
@@ -155,9 +158,9 @@ export default function Record() {
                     </div>
                     <div className="flex w-full justify-end">
                       <span className="text-xs text-green-700 font-medium">
-                        {
-                          detailSubmission.score !== null ? "Granted" : "Unreviewed"
-                        }
+                        {detailSubmission.score !== null
+                          ? "Granted"
+                          : "Unreviewed"}
                       </span>
                     </div>
                   </div>
@@ -170,13 +173,17 @@ export default function Record() {
                         className="border border-gray-400 w-full  h-full p-2 text-xs"
                         placeholder="Enter description"
                         readOnly={true}
-                        value={detailSubmission.feedback === null ? "" : detailSubmission.feedback}
+                        value={
+                          detailSubmission.feedback === null
+                            ? ""
+                            : detailSubmission.feedback
+                        }
                       />
                     </div>
                   </div>
                 </div>
               </div>
-            }
+            )}
           </div>
         </div>
       </Template>

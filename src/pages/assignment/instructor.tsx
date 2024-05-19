@@ -14,7 +14,6 @@ import dayjs from "dayjs";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
 
-
 const poppinsB = Poppins({
   subsets: ["latin"],
   display: "swap",
@@ -33,6 +32,7 @@ export default function InstuctorPage() {
   const currentDate = new Date();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [assignments, setAssignments] = useState<AssignmentType[]>([]);
+  const [totalSubmission, setTotalSubmission] = useState(0);
 
   const [formData, setFormData] = useState({
     namaAssignment: "",
@@ -42,25 +42,26 @@ export default function InstuctorPage() {
     dateDeadline: currentDate,
     timeDeadline: currentDate,
     jumlahSubmission: "",
-    judulAssignment: '',
-    deskripsiAssignment: ''
+    judulAssignment: "",
+    deskripsiAssignment: "",
   });
 
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
         // Mengambil token dari localStorage
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         console.log(token);
 
         // Melakukan fetch data dari API dengan menggunakan token bearer
-        const response = await fetch('http://localhost:3333/v1/assignment/list', {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
-
-
+        const response = await fetch(
+          "http://localhost:3333/v1/assignment/list",
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
 
         if (response.ok) {
           // Mengubah respons API menjadi format JSON
@@ -69,13 +70,37 @@ export default function InstuctorPage() {
           // Menyimpan data tugas ke state assignments
           setAssignments(data.data);
         } else {
-          console.error('Gagal mengambil data tugas');
+          console.error("Gagal mengambil data tugas");
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
+      }
+    };
+
+    const getTotalSubmission = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          "http://localhost:3333/v1/submission/total-submission",
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setTotalSubmission(data.data);
+        } else {
+          console.error("Gagal mengambil data tugas");
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
     };
     // Memanggil fungsi fetchAssignments saat komponen dimuat
+    getTotalSubmission();
     fetchAssignments();
   }, []);
 
@@ -98,19 +123,19 @@ export default function InstuctorPage() {
       timeStart: dayjs(formData.timeStart).format("HH:mm"),
       dateDeadline: dayjs(formData.dateDeadline).format("YYYY-MM-DD"),
       timeDeadline: dayjs(formData.dateStart).format("HH:mm"), // Assuming you intended to keep formData.dateStart here
-      jumlahSubmission: formData.jumlahSubmission,
-      deskripsiAssignment: formData.deskripsiAssignment
+      jumlahSubmission: totalSubmission,
+      deskripsiAssignment: formData.deskripsiAssignment,
     };
 
-    console.log(data)
+    console.log(data);
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     fetch("http://localhost:3333/v1/assignment/create", {
       method: "post",
       headers: {
         Authorization: `${token}`,
-        'content-type': 'Application/json'
+        "content-type": "Application/json",
       },
       body: JSON.stringify(data),
     })
@@ -128,8 +153,14 @@ export default function InstuctorPage() {
       <>
         <section className="bg-white min-h-screen p-5">
           <div className="flex items-center justify-between mb-10">
-            <h1 className="font-bold text-2xl md:text-[2rem]">All Assignment</h1>
-            <a href="#" className="md:hidden" onClick={() => setIsOpen(true)}>
+            <h1 className="font-bold text-2xl md:text-[2rem]">
+              All Assignment
+            </h1>
+            <a
+              href="#"
+              className="flex md:hidden"
+              onClick={() => setIsOpen(true)}
+            >
               <IoIosAddCircleOutline
                 size={40}
                 className="my-auto hover:bg-[#2E4F4F] hover:rounded-full hover:text-white"
@@ -192,13 +223,28 @@ export default function InstuctorPage() {
             </thead>
             <tbody className={poppins.className}>
               {assignments.map((assign, index) => (
-                <tr className={index % 2 === 0 ? "bg-white" : "bg-[#CBE4DE]"} key={index}>
-                  <td className="p-3 text-center align-middle ">{index + 1}.</td>
-                  <td className="p-3 text-center align-middle">{assign.namaAssignment}</td>
-                  <td className="p-3 text-center align-middle ">{assign.dateStart}</td>
-                  <td className="p-3 text-center align-middle">{assign.timeStart}</td>
-                  <td className="p-3 text-center align-middle">{assign.dateDeadline}</td>
-                  <td className="p-3 text-center align-middle">{assign.timeDeadline}</td>
+                <tr
+                  className={index % 2 === 0 ? "bg-white" : "bg-[#CBE4DE]"}
+                  key={index}
+                >
+                  <td className="p-3 text-center align-middle ">
+                    {index + 1}.
+                  </td>
+                  <td className="p-3 text-center align-middle">
+                    {assign.namaAssignment}
+                  </td>
+                  <td className="p-3 text-center align-middle ">
+                    {assign.dateStart}
+                  </td>
+                  <td className="p-3 text-center align-middle">
+                    {assign.timeStart}
+                  </td>
+                  <td className="p-3 text-center align-middle">
+                    {assign.dateDeadline}
+                  </td>
+                  <td className="p-3 text-center align-middle">
+                    {assign.timeDeadline}
+                  </td>
                   <td className="p-3 text-center align-middle">
                     <Link
                       href={`/assignment/submission/${assign.assignmentID}?title=${assign.namaAssignment}&timeDeadline=${assign.timeDeadline}&dateDeadline=${assign.dateDeadline}`}
@@ -211,7 +257,6 @@ export default function InstuctorPage() {
               ))}
             </tbody>
           </table>
-
 
           {assignments.length == 0 && (
             <p className="mt-5 text-center text-lg hidden md:block">
@@ -252,7 +297,7 @@ export default function InstuctorPage() {
                 />
               </div>
 
-              <div className="w-full flex flex-col">
+              {/* <div className="w-full flex flex-col">
                 <label htmlFor="inputInstruction" className="mb-3 font-bold">
                   Jumlah Submision
                 </label>
@@ -263,7 +308,7 @@ export default function InstuctorPage() {
                   className="border p-2 rounded"
                   onChange={handleChangeForm}
                 />
-              </div>
+              </div> */}
               <div className="w-full flex flex-col">
                 <label htmlFor="inputInstruction" className="mb-3 font-bold">
                   Description
