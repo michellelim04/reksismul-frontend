@@ -31,6 +31,28 @@ export default function Record() {
   const [assignment, setAssignment] = useState<AssignmentType>();
   const params = useSearchParams();
   const router = useRouter();
+  const [detailSubmission, setDetailSubmission] = useState<any>({});
+
+  const getDataDetailSubmission = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const detailSubmission = await fetch(
+        `http://localhost:3333/v1/submission/get/${id}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      if (detailSubmission.ok) {
+        const data = await detailSubmission.json();
+        setDetailSubmission(data.data[0]);
+      }
+    } catch (error) {
+      console.log("failed load data : ", error);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -58,6 +80,7 @@ export default function Record() {
 
     if (params.get("id")) {
       detailAssigment();
+      getDataDetailSubmission(params.get("submissionId") as string);
     }
   }, [params.get("id")]);
 
@@ -96,7 +119,7 @@ export default function Record() {
             >
               Assignment End:{" "}
               <span className="font-bold text-[#0E8388]">
-                {assignment?.dateStart} at{" "}
+                {assignment?.dateDeadline} at{" "}
                 {assignment?.timeDeadline?.substring(0, 5)}
               </span>
             </p>
@@ -107,46 +130,60 @@ export default function Record() {
           </p>
           <div className="flex w-full p-4 flex-col md:flex-row">
             <div className="flex w-full md:w-9/12 flex-col">
-              <div className="flex h-[400px] bg-gray-200 items-center justify-center w-full">
-                <p>Video</p>
+              <div className="flex h-[400px] bg-green-50 items-center justify-center w-full">
+                <p className="text-green-500">You have submitted</p>
               </div>
             </div>
-            <div className={`flex w-full my-3 md:my-0 md:w-3/12 items-center`}>
-              <div className="flex bg-white md:ml-3 w-full h-full flex-col p-3 shadow-md border border-gray-500 rounded-lg">
-                <div className="flex w-full">
+
+            {Object.keys(detailSubmission).length > 0 && (
+              <div
+                className={`flex w-full my-3 md:my-0 md:w-3/12 items-center`}
+              >
+                <div className="flex bg-white md:ml-3 w-full h-full flex-col p-3 shadow-md border border-gray-500 rounded-lg">
                   <div className="flex w-full">
-                    <span className="text-lg">Score</span>
+                    <div className="flex w-full">
+                      <span className="text-lg">Score</span>
+                    </div>
+                    <div className="flex w-full justify-end">
+                      <span className="text-lg text-green-700 font-semibold">
+                        {detailSubmission.score !== null
+                          ? detailSubmission.score
+                          : "-"}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex w-full justify-end">
-                    <span className="text-lg text-green-700 font-medium">
-                      100
-                    </span>
+                  <div className="flex w-full my-2">
+                    <div className="flex w-full">
+                      <span className="text-xs">Status</span>
+                    </div>
+                    <div className="flex w-full justify-end">
+                      <span className="text-xs text-green-700 font-medium">
+                        {detailSubmission.score !== null
+                          ? "Granted"
+                          : "Unreviewed"}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="flex w-full my-2">
-                  <div className="flex w-full">
-                    <span className="text-xs">Status</span>
-                  </div>
-                  <div className="flex w-full justify-end">
-                    <span className="text-xs text-green-700 font-medium">
-                      Granted
-                    </span>
-                  </div>
-                </div>
-                <div className="flex w-full flex-col">
-                  <div className="flex w-full">
-                    <span className="text-xs">Feedback</span>
-                  </div>
-                  <div className="flex w-full mt-2">
-                    <textarea
-                      className="border border-gray-400 w-full  h-full p-2 text-xs"
-                      placeholder="Enter description"
-                      value="Good !"
-                    />
+                  <div className="flex w-full flex-col">
+                    <div className="flex w-full">
+                      <span className="text-xs">Feedback</span>
+                    </div>
+                    <div className="flex w-full mt-2">
+                      <textarea
+                        className="border border-gray-400 w-full  h-full p-2 text-xs"
+                        placeholder="Enter description"
+                        readOnly={true}
+                        value={
+                          detailSubmission.feedback === null
+                            ? ""
+                            : detailSubmission.feedback
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </Template>

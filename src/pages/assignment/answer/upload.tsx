@@ -109,7 +109,7 @@ export default function Upload() {
             >
               Assignment End:{" "}
               <span className="font-bold text-[#0E8388]">
-                {assignment?.dateStart} at{" "}
+                {assignment?.dateDeadline} at{" "}
                 {assignment?.timeDeadline?.substring(0, 5)}
               </span>
             </p>
