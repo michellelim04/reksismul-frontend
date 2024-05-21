@@ -118,7 +118,7 @@ export default function Answer() {
 		}
 		setRecordingStatus("Uploading...");
 		const uploadAssignment = await fetch(
-			`http://localhost:3333/v1/assignment/submit/${assignment?.assignmentID}`,
+			`https://reksismul-backend-production.up.railway.app/v1/assignment/submit/${assignment?.assignmentID}`,
 			{
 				method: "POST",
 				headers: {
@@ -164,7 +164,7 @@ export default function Answer() {
 
 		const checkStatus = (result: any) => {
 			fetch(
-				`http://localhost:3333/v1/assignment/student-check/${router.query.id}`,
+				`https://reksismul-backend-production.up.railway.app/v1/assignment/student-check/${router.query.id}`,
 				{
 					method: "GET",
 					headers: {
@@ -203,12 +203,16 @@ export default function Answer() {
 		};
 
 		const detailAssigment = async () => {
-			fetch("http://localhost:3333/v1/assignment/list/" + router.query.id, {
-				method: "GET",
-				headers: {
-					Authorization: token,
-				},
-			}).then(async (response) => {
+			fetch(
+				"https://reksismul-backend-production.up.railway.app/v1/assignment/list/" +
+					router.query.id,
+				{
+					method: "GET",
+					headers: {
+						Authorization: token,
+					},
+				}
+			).then(async (response) => {
 				if (response.status !== 200) {
 					toast.error("Failed to retrieve items");
 					return;
@@ -227,126 +231,114 @@ export default function Answer() {
 			detailAssigment();
 		}
 	}, [router, stream]);
-
+	useEffect(() => {
+		RequestPermission();
+	}, []);
 	return (
-		<div className="min-h-screen bg-white">
-			<Template>
-				<div className="flex flex-row h-min p-10 pb-0 md:pr-20 justify-between items-center">
-					<h1 className={`${poppinsXB.className} text-xl md:text-4xl`}>
-						Answer Assignment
-					</h1>
-					<button
-						className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md`}
-						onClick={() => router.push("/assignment/student")}
+		<div className="flex flex-col bg-white">
+			<div className="flex flex-row h-min p-10 pb-0 md:pr-20 justify-between items-center">
+				<h1 className={`${poppinsXB.className} text-xl md:text-4xl`}>
+					Answer Assignment
+				</h1>
+				<button
+					className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md`}
+					onClick={() => router.push("/assignment/student")}
+				>
+					Cancel
+				</button>
+			</div>
+			<div className="m-10 rounded-3xl border border-[#0E8388]">
+				<p className={`${poppinsXB.className} mx-5 my-3 text-xl`}>
+					{assignment?.judulAssignment}
+				</p>
+				<hr className="bg-[#2E4F4F] h-0.5" />
+				<div className="flex flex-row">
+					<p className={`${poppins.className} mx-5 my-3 text-xs md:text-base`}>
+						Assignment Start:{" "}
+						<span className="font-bold text-[#0E8388]">
+							{assignment?.dateStart} at{" "}
+							{assignment?.timeStart?.substring(0, 5)}
+						</span>
+					</p>
+					<div className="bg-slate-400 w-0.5 my-3"></div>
+					<p className={`${poppins.className} mx-5 my-3 text-xs md:text-base`}>
+						Assignment End:{" "}
+						<span className="font-bold text-[#0E8388]">
+							{assignment?.dateDeadline} at{" "}
+							{assignment?.timeDeadline?.substring(0, 5)}
+						</span>
+					</p>
+				</div>
+				<hr className="bg-[#2E4F4F] h-0.5" />
+				<p className={`${poppins.className} mx-5 my-3 text-xs md:text-sm`}>
+					{assignment?.deskripsiAssignment}
+				</p>
+				<div className="flex w-full p-4 flex-col md:flex-row">
+					<div className="flex w-full md:w-9/12 flex-col">
+						<div className="flex bg-gray-200 items-center justify-center rounded-xl shadow-lg">
+							{permission && (
+								<video
+									autoPlay
+									ref={videoReference}
+									muted
+									className="w-full h-auto rounded-xl"
+								></video>
+							)}
+							{!permission && (
+								<div className="h-[400px] flex flex-col align-middle justify-center text-center">
+									<h1>CAMERA PERMISSION REQUIRED</h1>
+								</div>
+							)}
+						</div>
+						<div className="flex border border-gray-500 rounded-md h-[40px] items-center justify-center my-3">
+							<p className="text-xs">Camera used</p>
+						</div>
+					</div>
+					<div
+						className={`flex flex-col w-full md:w-3/12 justify-center align-middle`}
 					>
-						Cancel
-					</button>
-				</div>
-				<div className="m-10 md:mr-20 rounded-3xl border border-[#0E8388]">
-					<p className={`${poppinsXB.className} mx-5 my-3 text-xl`}>
-						{assignment?.judulAssignment}
-					</p>
-					<hr className="bg-[#2E4F4F] h-0.5" />
-					<div className="flex flex-row">
-						<p
-							className={`${poppins.className} mx-5 my-3 text-xs md:text-base`}
-						>
-							Assignment Start:{" "}
-							<span className="font-bold text-[#0E8388]">
-								{assignment?.dateStart} at{" "}
-								{assignment?.timeStart?.substring(0, 5)}
-							</span>
-						</p>
-						<div className="bg-slate-400 w-0.5 my-3"></div>
-						<p
-							className={`${poppins.className} mx-5 my-3 text-xs md:text-base`}
-						>
-							Assignment End:{" "}
-							<span className="font-bold text-[#0E8388]">
-								{assignment?.dateDeadline} at{" "}
-								{assignment?.timeDeadline?.substring(0, 5)}
-							</span>
-						</p>
-					</div>
-					<hr className="bg-[#2E4F4F] h-0.5" />
-					<p className={`${poppins.className} mx-5 my-3 text-xs md:text-sm`}>
-						{assignment?.deskripsiAssignment}
-					</p>
-					<div className="flex w-full p-4 flex-col md:flex-row">
-						<div className="flex w-full md:w-9/12 flex-col">
-							<div className="flex bg-gray-200 items-center justify-center">
-								{permission && (
-									<video
-										autoPlay
-										ref={videoReference}
-										className="object-fill"
-									></video>
-								)}
-								{!permission && (
-									<div className="h-[400px] flex flex-col align-middle justify-center text-center">
-										<h1>CAMERA PERMISSION REQUIRED</h1>
-									</div>
-								)}
+						<p className="font-bold text-xl text-center">{recordingStatus}</p>
+						<div className="grid grid-cols-2 md:grid-cols-1 w-full items-center flex-row md:flex-col justify-between md:justify-center gap-5 md:w-2/3 md:mx-auto ">
+							<div className="flex mx-0 md:mx-2 my-3">
+								<button
+									className={`${poppinsB.className} text-white text-xl md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-full`}
+									onClick={() => {
+										StartRecording();
+									}}
+								>
+									<span className="text-xl md:text-md">Start</span>
+								</button>
 							</div>
-							<div className="flex border border-gray-500 rounded-md h-[40px] items-center justify-center my-3">
-								<p className="text-xs">Camera used</p>
+							<div className="flex mx-0 md:mx-2 my-3">
+								<button
+									className={`${poppinsB.className} text-white text-xl md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-full`}
+									onClick={() => {
+										StopRecording();
+									}}
+								>
+									<span className="text-xl">Stop</span>
+								</button>
 							</div>
-						</div>
-						<div className={`flex w-full md:w-3/12 items-center`}>
-							<div className="flex w-full items-center flex-row md:flex-col justify-between md:justify-center">
-								<div className="flex mx-0 md:mx-2 my-3">
-									<span>{recordingStatus}</span>
-								</div>
-								<div className="flex mx-0 md:mx-2 my-3">
-									<button
-										className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-[100px] md:w-[120px]`}
-										onClick={() => {
-											StartRecording();
-										}}
-									>
-										<span className="text-xs md:text-md">Start</span>
-									</button>
-								</div>
-								<div className="flex mx-0 md:mx-2 my-3">
-									<button
-										className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-[100px] md:w-[120px]`}
-										onClick={() => {
-											StopRecording();
-										}}
-									>
-										<span className="text-xs md:text-md">Stop</span>
-									</button>
-								</div>
-								<div className="flex mx-0 md:mx-2 my-3">
-									<button
-										className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-[100px] md:w-[120px]`}
-										onClick={() => UploadRecording()}
-									>
-										<span className="text-xs md:text-md">Upload</span>
-									</button>
-								</div>
-
-								<div className="flex mx-0 md:mx-2 my-3">
-									<button
-										className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-[100px] md:w-[120px]`}
-										onClick={RequestPermission}
-									>
-										<span className="text-xs md:text-md">Permission</span>
-									</button>
-								</div>
-								<div className="flex mx-0 md:mx-2 my-3">
-									<button
-										className={`${poppinsB.className} text-white text-xs md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-[100px] md:w-[120px]`}
-										onClick={ResetRecording}
-									>
-										<span className="text-xs md:text-md">Reset</span>
-									</button>
-								</div>
+							<div className="flex mx-0 md:mx-2 my-3">
+								<button
+									className={`${poppinsB.className} text-white text-xl md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-full`}
+									onClick={() => UploadRecording()}
+								>
+									<span className="text-xl">Upload</span>
+								</button>
+							</div>
+							<div className="flex mx-0 md:mx-2 my-3">
+								<button
+									className={`${poppinsB.className} text-white text-xl md:text-base bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full h-min px-5 py-3 md:px-7 shadow-md w-full`}
+									onClick={ResetRecording}
+								>
+									<span className="text-xl">Reset</span>
+								</button>
 							</div>
 						</div>
 					</div>
 				</div>
-			</Template>
+			</div>
 		</div>
 	);
 }
