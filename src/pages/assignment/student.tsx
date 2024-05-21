@@ -234,10 +234,14 @@ export default function Student() {
                     <td className="p-3">{row.dateDeadline}</td>
                     <td className="p-3">{row.timeDeadline}</td>
                     <td className="p-3">
-                      {submissionData[row.assignmentID]?.status}
+                      {submissionData[row.assignmentID]?.status === true
+                        ? "Reviewed"
+                        : "Unreviewed"}
                     </td>
                     <td className="p-3">
-                      {submissionData[row.assignmentID]?.score}
+                      {submissionData[row.assignmentID]?.score === null
+                        ? "-"
+                        : submissionData[row.assignmentID]?.score}
                     </td>
                     <td className="p-3">
                       <button
