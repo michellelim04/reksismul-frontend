@@ -27,7 +27,6 @@ const poppinsXB = Poppins({
 });
 
 interface SubmissionData {
-  status: boolean | null;
   score: number | null;
 }
 
@@ -83,13 +82,12 @@ export default function Student() {
           return;
         }
         const responseJson = await response.json();
-        const status = responseJson.data.status;
         const score = responseJson.data.score;
 
         // Update submission data state with status and score for this assignment
         setSubmissionData((prevState) => ({
           ...prevState,
-          [assignmentId]: { status, score },
+          [assignmentId]: { score },
         }));
       } catch (error) {
         console.error("Error:", error);
@@ -169,9 +167,9 @@ export default function Student() {
                   <div className={`${poppins.className} w-1/2 my-3`}>
                     <p>Status: </p>
                     <p className="font-bold">
-                      {submissionData[row.assignmentID]?.status === true
-                        ? "Reviewed"
-                        : "Unreviewed"}
+                      {submissionData[row.assignmentID]?.score === null
+                        ? "Unreviewed"
+                        : "Reviewed"}
                     </p>
                   </div>
                   <div className="w-px bg-[#2E4F4F]"></div>
@@ -234,14 +232,14 @@ export default function Student() {
                     <td className="p-3">{row.dateDeadline}</td>
                     <td className="p-3">{row.timeDeadline}</td>
                     <td className="p-3">
-                      {submissionData[row.assignmentID]?.status === true
-                        ? "Reviewed"
-                        : "Unreviewed"}
-                    </td>
-                    <td className="p-3">
                       {submissionData[row.assignmentID]?.score === null
                         ? "-"
                         : submissionData[row.assignmentID]?.score}
+                    </td>
+                    <td className="p-3">
+                      {submissionData[row.assignmentID]?.score === null
+                        ? "Unreviewed"
+                        : "Reviewed"}
                     </td>
                     <td className="p-3">
                       <button
