@@ -36,7 +36,6 @@ export default function Student() {
   const [submissionData, setSubmissionData] = useState<{
     [key: string]: SubmissionData;
   }>({});
-  const [token, setToken] = useState("");
   const pageSize = 10;
   const [currentPage, setCurrentPage] = useState(1);
   function page(array: AssignmentType[], pageSize: number, pageNumber: number) {
@@ -64,12 +63,11 @@ export default function Student() {
       window.location.replace("/auth/login");
       return;
     }
-    setToken(token);
 
     const fetchSubmissionData = async (assignmentId: string) => {
       try {
         const response = await fetch(
-          `http://localhost:3333/v1/submissions/list?id=${assignmentId}`,
+          `http://localhost:3333/v1/submission/list?id=${assignmentId}`,
           {
             method: "GET",
             headers: {
@@ -82,13 +80,19 @@ export default function Student() {
           return;
         }
         const responseJson = await response.json();
-        const score = responseJson.data.submission.score;
+        const submissionItem = responseJson.data.find(
+          (item: any) =>
+            item.submission && item.submission.assignment_id === assignmentId
+        );
+        if (submissionItem && submissionItem.submission) {
+          const { score } = submissionItem.submission;
 
-        // Update submission data state with status and score for this assignment
-        setSubmissionData((prevState) => ({
-          ...prevState,
-          [assignmentId]: { score },
-        }));
+          // Update submission data state with score for this assignment
+          setSubmissionData((prevState) => ({
+            ...prevState,
+            [assignmentId]: { score },
+          }));
+        }
       } catch (error) {
         console.error("Error:", error);
       }
@@ -167,7 +171,7 @@ export default function Student() {
                   <div className={`${poppins.className} w-1/2 my-3`}>
                     <p>Status: </p>
                     <p className="font-bold">
-                      {submissionData[row.assignmentID]?.score === null
+                      {!submissionData[row.assignmentID]?.score
                         ? "Unreviewed"
                         : "Reviewed"}
                     </p>
@@ -176,14 +180,14 @@ export default function Student() {
                   <div className={`${poppins.className} w-1/2 my-3`}>
                     <p>Score: </p>
                     <p className="font-bold">
-                      {submissionData[row.assignmentID]?.score === null
+                      {!submissionData[row.assignmentID]?.score
                         ? "-"
                         : submissionData[row.assignmentID]?.score}
                     </p>
                   </div>
                 </div>
                 <button
-                  className={`${poppinsB.className} text-white text-xs bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-2  shadow-md`}
+                  className={`${poppinsB.className} text-white text-xs bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-2 shadow-md`}
                   onClick={handleSeeMore}
                   value={row.assignmentID}
                 >
@@ -232,12 +236,12 @@ export default function Student() {
                     <td className="p-3">{row.dateDeadline}</td>
                     <td className="p-3">{row.timeDeadline}</td>
                     <td className="p-3">
-                      {submissionData[row.assignmentID]?.score === null
+                      {!submissionData[row.assignmentID]?.score
                         ? "-"
                         : submissionData[row.assignmentID]?.score}
                     </td>
                     <td className="p-3">
-                      {submissionData[row.assignmentID]?.score === null
+                      {!submissionData[row.assignmentID]?.score
                         ? "Unreviewed"
                         : "Reviewed"}
                     </td>
