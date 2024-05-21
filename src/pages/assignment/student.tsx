@@ -89,7 +89,7 @@ export default function Student() {
 						const dateEnd = new Date(row.dateDeadline);
 						return (
 							<div
-								className="max-w-sm flex flex-col bg-[#CBE4DE] rounded-lg p-3 shadow-md mt-5"
+								className="w-full flex flex-col bg-[#CBE4DE] rounded-lg p-3 shadow-md mt-5 mx-auto"
 								key={row.assignmentID}
 							>
 								<div
