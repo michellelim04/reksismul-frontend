@@ -82,7 +82,7 @@ export default function Student() {
           return;
         }
         const responseJson = await response.json();
-        const score = responseJson.data.score;
+        const score = responseJson.data.submission.score;
 
         // Update submission data state with status and score for this assignment
         setSubmissionData((prevState) => ({
