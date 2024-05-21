@@ -41,12 +41,16 @@ export default function Closed() {
 		}
 
 		const detailAssigment = () => {
-			fetch("http://35.239.167.8/v1/assignment/list/" + params.get("id"), {
-				method: "GET",
-				headers: {
-					Authorization: token,
-				},
-			}).then(async (response) => {
+			fetch(
+				"https://reksismul-backend-production.up.railway.app/v1/assignment/list/" +
+					params.get("id"),
+				{
+					method: "GET",
+					headers: {
+						Authorization: token,
+					},
+				}
+			).then(async (response) => {
 				if (response.status !== 200) {
 					toast.error("Failed to retrieve items");
 					return;

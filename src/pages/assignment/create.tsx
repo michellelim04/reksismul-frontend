@@ -44,14 +44,17 @@ const CreateInstuctorPage: React.FC<React.ReactNode> = () => {
 			jumlahSubmission: formData.jumlahSubmission,
 		};
 
-		fetch("http://35.239.167.8/v1/assignment/create", {
-			method: "post",
-			headers: {
-				Authorization: `${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
-		})
+		fetch(
+			"https://reksismul-backend-production.up.railway.app/v1/assignment/create",
+			{
+				method: "post",
+				headers: {
+					Authorization: `${token}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			}
+		)
 			.then((result) => result.json())
 			.then((data) => router.push("/assignment/instructor"))
 			.catch((error) => console.error(error));

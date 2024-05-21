@@ -26,7 +26,7 @@ export default function Home() {
 			email,
 			password,
 		});
-		fetch("http://35.239.167.8/v1/auth/login", {
+		fetch("https://reksismul-backend-production.up.railway.app/v1/auth/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

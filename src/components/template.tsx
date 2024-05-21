@@ -116,11 +116,14 @@ const Template = ({ children }: { children: ReactNode }) => {
 			setTimeout(() => router.replace("/auth/login"), 1500);
 			return;
 		}
-		fetch("http://35.239.167.8/v1/auth/verify", {
-			headers: {
-				Authorization: token,
-			},
-		})
+		fetch(
+			"https://reksismul-backend-production.up.railway.app/v1/auth/verify",
+			{
+				headers: {
+					Authorization: token,
+				},
+			}
+		)
 			.then(async (response) => {
 				if (response.status !== 200 || response.body === null) {
 					localStorage.removeItem("token");

@@ -118,7 +118,7 @@ export default function Answer() {
 		}
 		setRecordingStatus("Uploading...");
 		const uploadAssignment = await fetch(
-			`http://35.239.167.8/v1/assignment/submit/${assignment?.assignmentID}`,
+			`https://reksismul-backend-production.up.railway.app/v1/assignment/submit/${assignment?.assignmentID}`,
 			{
 				method: "POST",
 				headers: {
@@ -164,7 +164,7 @@ export default function Answer() {
 
 		const checkStatus = (result: any) => {
 			fetch(
-				`http://35.239.167.8/v1/assignment/student-check/${router.query.id}`,
+				`https://reksismul-backend-production.up.railway.app/v1/assignment/student-check/${router.query.id}`,
 				{
 					method: "GET",
 					headers: {
@@ -203,12 +203,16 @@ export default function Answer() {
 		};
 
 		const detailAssigment = async () => {
-			fetch("http://35.239.167.8/v1/assignment/list/" + router.query.id, {
-				method: "GET",
-				headers: {
-					Authorization: token,
-				},
-			}).then(async (response) => {
+			fetch(
+				"https://reksismul-backend-production.up.railway.app/v1/assignment/list/" +
+					router.query.id,
+				{
+					method: "GET",
+					headers: {
+						Authorization: token,
+					},
+				}
+			).then(async (response) => {
 				if (response.status !== 200) {
 					toast.error("Failed to retrieve items");
 					return;

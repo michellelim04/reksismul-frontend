@@ -69,7 +69,7 @@ export default function Student() {
 		const fetchSubmissionData = async (assignmentId: string) => {
 			try {
 				const response = await fetch(
-					`http://35.239.167.8/v1/submission/list?id=${assignmentId}`,
+					`https://reksismul-backend-production.up.railway.app/v1/submission/list?id=${assignmentId}`,
 					{
 						method: "GET",
 						headers: {
@@ -95,12 +95,15 @@ export default function Student() {
 			}
 		};
 
-		fetch("http://35.239.167.8/v1/assignment/list", {
-			method: "GET",
-			headers: {
-				Authorization: token,
-			},
-		}).then(async (response) => {
+		fetch(
+			"https://reksismul-backend-production.up.railway.app/v1/assignment/list",
+			{
+				method: "GET",
+				headers: {
+					Authorization: token,
+				},
+			}
+		).then(async (response) => {
 			if (response.status !== 200) {
 				toast.error("Failed to retrieve assignment items");
 				return;

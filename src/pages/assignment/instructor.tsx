@@ -54,11 +54,14 @@ export default function InstuctorPage() {
 				console.log(token);
 
 				// Melakukan fetch data dari API dengan menggunakan token bearer
-				const response = await fetch("http://35.239.167.8/v1/assignment/list", {
-					headers: {
-						Authorization: `${token}`,
-					},
-				});
+				const response = await fetch(
+					"https://reksismul-backend-production.up.railway.app/v1/assignment/list",
+					{
+						headers: {
+							Authorization: `${token}`,
+						},
+					}
+				);
 
 				if (response.ok) {
 					// Mengubah respons API menjadi format JSON
@@ -78,7 +81,7 @@ export default function InstuctorPage() {
 			try {
 				const token = localStorage.getItem("token");
 				const response = await fetch(
-					"http://35.239.167.8/v1/submission/total-submission",
+					"https://reksismul-backend-production.up.railway.app/v1/submission/total-submission",
 					{
 						headers: {
 							Authorization: `${token}`,
@@ -128,14 +131,17 @@ export default function InstuctorPage() {
 
 		const token = localStorage.getItem("token");
 
-		fetch("http://35.239.167.8/v1/assignment/create", {
-			method: "post",
-			headers: {
-				Authorization: `${token}`,
-				"content-type": "Application/json",
-			},
-			body: JSON.stringify(data),
-		})
+		fetch(
+			"https://reksismul-backend-production.up.railway.app/v1/assignment/create",
+			{
+				method: "post",
+				headers: {
+					Authorization: `${token}`,
+					"content-type": "Application/json",
+				},
+				body: JSON.stringify(data),
+			}
+		)
 			.then((result) => result.json())
 			.then((data) => {
 				console.log(data);

@@ -37,7 +37,7 @@ export default function Record() {
 		try {
 			const token = localStorage.getItem("token");
 			const detailSubmission = await fetch(
-				`http://35.239.167.8/v1/submission/get/${id}`,
+				`https://reksismul-backend-production.up.railway.app/v1/submission/get/${id}`,
 				{
 					headers: {
 						Authorization: `${token}`,
@@ -62,12 +62,16 @@ export default function Record() {
 		}
 
 		const detailAssigment = () => {
-			fetch("http://35.239.167.8/v1/assignment/list/" + params.get("id"), {
-				method: "GET",
-				headers: {
-					Authorization: token,
-				},
-			}).then(async (response) => {
+			fetch(
+				"https://reksismul-backend-production.up.railway.app/v1/assignment/list/" +
+					params.get("id"),
+				{
+					method: "GET",
+					headers: {
+						Authorization: token,
+					},
+				}
+			).then(async (response) => {
 				if (response.status !== 200) {
 					toast.error("Failed to retrieve items");
 					return;
