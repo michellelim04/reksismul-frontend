@@ -69,7 +69,7 @@ export default function Student() {
 		const fetchSubmissionData = async (assignmentId: string) => {
 			try {
 				const response = await fetch(
-					`http://localhost:3333/v1/submission/list?id=${assignmentId}`,
+					`http://35.239.167.8/v1/submission/list?id=${assignmentId}`,
 					{
 						method: "GET",
 						headers: {
@@ -95,7 +95,7 @@ export default function Student() {
 			}
 		};
 
-		fetch("http://localhost:3333/v1/assignment/list", {
+		fetch("http://35.239.167.8/v1/assignment/list", {
 			method: "GET",
 			headers: {
 				Authorization: token,

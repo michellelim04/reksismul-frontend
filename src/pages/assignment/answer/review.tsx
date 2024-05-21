@@ -37,7 +37,7 @@ export default function Record() {
 		try {
 			const token = localStorage.getItem("token");
 			const detailSubmission = await fetch(
-				`http://localhost:3333/v1/submission/get/${id}`,
+				`http://35.239.167.8/v1/submission/get/${id}`,
 				{
 					headers: {
 						Authorization: `${token}`,
@@ -62,7 +62,7 @@ export default function Record() {
 		}
 
 		const detailAssigment = () => {
-			fetch("http://localhost:3333/v1/assignment/list/" + params.get("id"), {
+			fetch("http://35.239.167.8/v1/assignment/list/" + params.get("id"), {
 				method: "GET",
 				headers: {
 					Authorization: token,

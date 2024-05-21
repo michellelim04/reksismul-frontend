@@ -33,7 +33,7 @@ const DetailSubmission = () => {
 		try {
 			const token = localStorage.getItem("token");
 			const detailAssigment = await fetch(
-				`http://localhost:3333/v1/submission/list?id=${id}`,
+				`http://35.239.167.8/v1/submission/list?id=${id}`,
 				{
 					headers: {
 						Authorization: `${token}`,

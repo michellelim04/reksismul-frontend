@@ -118,7 +118,7 @@ export default function Answer() {
 		}
 		setRecordingStatus("Uploading...");
 		const uploadAssignment = await fetch(
-			`http://localhost:3333/v1/assignment/submit/${assignment?.assignmentID}`,
+			`http://35.239.167.8/v1/assignment/submit/${assignment?.assignmentID}`,
 			{
 				method: "POST",
 				headers: {
@@ -164,7 +164,7 @@ export default function Answer() {
 
 		const checkStatus = (result: any) => {
 			fetch(
-				`http://localhost:3333/v1/assignment/student-check/${router.query.id}`,
+				`http://35.239.167.8/v1/assignment/student-check/${router.query.id}`,
 				{
 					method: "GET",
 					headers: {
@@ -203,7 +203,7 @@ export default function Answer() {
 		};
 
 		const detailAssigment = async () => {
-			fetch("http://localhost:3333/v1/assignment/list/" + router.query.id, {
+			fetch("http://35.239.167.8/v1/assignment/list/" + router.query.id, {
 				method: "GET",
 				headers: {
 					Authorization: token,

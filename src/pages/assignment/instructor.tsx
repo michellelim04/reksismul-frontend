@@ -54,14 +54,11 @@ export default function InstuctorPage() {
 				console.log(token);
 
 				// Melakukan fetch data dari API dengan menggunakan token bearer
-				const response = await fetch(
-					"http://localhost:3333/v1/assignment/list",
-					{
-						headers: {
-							Authorization: `${token}`,
-						},
-					}
-				);
+				const response = await fetch("http://35.239.167.8/v1/assignment/list", {
+					headers: {
+						Authorization: `${token}`,
+					},
+				});
 
 				if (response.ok) {
 					// Mengubah respons API menjadi format JSON
@@ -81,7 +78,7 @@ export default function InstuctorPage() {
 			try {
 				const token = localStorage.getItem("token");
 				const response = await fetch(
-					"http://localhost:3333/v1/submission/total-submission",
+					"http://35.239.167.8/v1/submission/total-submission",
 					{
 						headers: {
 							Authorization: `${token}`,
@@ -131,7 +128,7 @@ export default function InstuctorPage() {
 
 		const token = localStorage.getItem("token");
 
-		fetch("http://localhost:3333/v1/assignment/create", {
+		fetch("http://35.239.167.8/v1/assignment/create", {
 			method: "post",
 			headers: {
 				Authorization: `${token}`,

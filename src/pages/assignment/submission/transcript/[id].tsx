@@ -41,7 +41,7 @@ const FeedbackAssignment = () => {
 		try {
 			const token = localStorage.getItem("token");
 			const updateScoreAndFeedBack = await fetch(
-				`http://localhost:3333/v1/submission/update/${params.id}`,
+				`http://35.239.167.8/v1/submission/update/${params.id}`,
 				{
 					method: "PUT",
 					headers: {
@@ -68,7 +68,7 @@ const FeedbackAssignment = () => {
 		try {
 			const token = localStorage.getItem("token");
 			const detailSubmission = await fetch(
-				`http://localhost:3333/v1/submission/get/${id}`,
+				`http://35.239.167.8/v1/submission/get/${id}`,
 				{
 					headers: {
 						Authorization: `${token}`,
@@ -92,7 +92,7 @@ const FeedbackAssignment = () => {
 		}
 		if (params === null) return;
 		const transcriptFetch = await fetch(
-			"http://localhost:3333/v1/submission/transcript/" + params.id,
+			"http://35.239.167.8/v1/submission/transcript/" + params.id,
 			{
 				method: "GET",
 				headers: {
@@ -125,7 +125,7 @@ const FeedbackAssignment = () => {
 			router.replace("/auth/login");
 			return;
 		}
-		fetch("http://localhost:3333/v1/submission/video/" + params.id, {
+		fetch("http://35.239.167.8/v1/submission/video/" + params.id, {
 			method: "GET",
 			headers: {
 				Authorization: token,
@@ -139,7 +139,7 @@ const FeedbackAssignment = () => {
 			const responseData = responsejson.data.url;
 			setVideoUrl(responseData);
 		});
-		fetch("http://localhost:3333/v1/submission/check-transcript/" + params.id, {
+		fetch("http://35.239.167.8/v1/submission/check-transcript/" + params.id, {
 			method: "GET",
 			headers: {
 				Authorization: token,
