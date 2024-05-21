@@ -98,7 +98,7 @@ export default function Record() {
             Done
           </button>
         </div>
-        <div className="m-10 md:mr-20 rounded-3xl border border-[#0E8388]">
+        <div className="mx-10 md:mr-20 rounded-3xl border border-[#0E8388]">
           <p className={`${poppinsXB.className} mx-5 my-3 text-xl`}>
             {assignment?.judulAssignment}
           </p>

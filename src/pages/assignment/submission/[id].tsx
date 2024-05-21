@@ -200,11 +200,15 @@ const DetailSubmission = () => {
                       </div>
                       <div className="flex w-full justify-end">
                         {e.submission !== undefined ? (
-                          <button
-                            className={`${poppinsB.className} text-white bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-2 text-xs shadow-md`}
+                          <a
+                            href={`/assignment/submission/transcript/${e.submission.submission_id}`}
                           >
-                            Review
-                          </button>
+                            <button
+                              className={`${poppinsB.className} text-white bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-3 shadow-md`}
+                            >
+                              Review
+                            </button>
+                          </a>
                         ) : (
                           "-"
                         )}
