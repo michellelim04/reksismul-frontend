@@ -203,7 +203,7 @@ const Template = ({ children }: { children: ReactNode }) => {
       {/* This is the main content for the mobile page */}
       <main
         className={
-          ("bg-white md:hidden h-screen " +
+          ("bg-white md:hidden min-h-screen " +
             (sidebarState &&
               "opacity-50 transition-opacity duration-500 ease-in-out")) as string
         }

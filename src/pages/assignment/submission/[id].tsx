@@ -156,6 +156,7 @@ const DetailSubmission = () => {
 						</table>
 					</div>
 
+<<<<<<< HEAD
 					<div className="flex md:hidden w-full flex-col">
 						{listAssigment.length <= 0 ? (
 							<div className="flex w-full justify-center">
@@ -223,6 +224,75 @@ const DetailSubmission = () => {
 			</>
 		</Template>
 	);
+=======
+          <div className="flex md:hidden w-full flex-col">
+            {listAssigment.length <= 0 ? (
+              <div className="flex w-full justify-center">
+                <span className="font-semibold my-2">Data not available !</span>
+              </div>
+            ) : (
+              listAssigment.length > 0 &&
+              listAssigment.map((e: any, i) => {
+                return (
+                  <div
+                    key={i}
+                    className="flex w-full flex-col bg-[#CBE4DE] p-2 rounded-md my-2 h-[150px] justify-center"
+                  >
+                    <div className="flex w-full justify-center">
+                      <span className="font-semibold my-2">{e.email}</span>
+                    </div>
+                    <div className="flex w-full border-t border-t-gray-500 border-b border-b-gray-500 my-1 items-center">
+                      <div className="flex w-full border-r border-r-gray-500 p-1 border-h">
+                        <span className="text-xs">
+                          Submission :{" "}
+                          {e.submission !== undefined
+                            ? moment(e.submission.created_at).format(
+                                "DD/MM/YYYY HH.mm"
+                              )
+                            : "-"}
+                        </span>
+                      </div>
+                      <div className="flex w-full border-l border-l-gray-300 p-1">
+                        <span className="text-xs">Score : -</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center w-full pt-2">
+                      <div className="flex w-full">
+                        <span className="text-xs">
+                          Status :{" "}
+                          {e.submission !== undefined
+                            ? e.submission.status
+                              ? "Reviewed"
+                              : "Unreviewed"
+                            : "-"}
+                        </span>
+                      </div>
+                      <div className="flex w-full justify-end">
+                        {e.submission !== undefined ? (
+                          <a
+                            href={`/assignment/submission/transcript/${e.submission.submission_id}`}
+                          >
+                            <button
+                              className={`${poppinsB.className} text-white bg-[#2E4F4F] hover:bg-[#0E8388] rounded-full p-3 shadow-md`}
+                            >
+                              Review
+                            </button>
+                          </a>
+                        ) : (
+                          "-"
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </section>
+      </>
+    </Template>
+  );
+>>>>>>> 99647588b6b61128c4158ffb6272a9be2592b23e
 };
 
 export default DetailSubmission;
