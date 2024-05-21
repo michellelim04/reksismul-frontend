@@ -67,7 +67,7 @@ export default function Student() {
     const fetchSubmissionData = async (assignmentId: string) => {
       try {
         const response = await fetch(
-          `http://reksismul-backend-production.up.railway.app/v1/submission/list?id=${assignmentId}`,
+          `https://reksismul-backend-production.up.railway.app/v1/submission/list?id=${assignmentId}`,
           {
             method: "GET",
             headers: {
