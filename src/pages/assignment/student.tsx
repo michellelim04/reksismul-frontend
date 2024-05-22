@@ -145,7 +145,7 @@ export default function Student() {
                   className={`${poppins.className} text-sm text-center space-y-1 mb-3`}
                 >
                   <p>Assignment Title: </p>
-                  <p className="font-bold">{row.assignmentID}</p>
+                  <p className="font-bold">{row.judulAssignment}</p>
                 </div>
                 <hr className="bg-[#2E4F4F] w-full h-0.5"></hr>
                 <div className="flex flex-row justify-evenly text-xs text-center">
