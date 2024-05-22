@@ -81,7 +81,7 @@ export default function Home() {
         height={400}
       />
       <form
-        className="flex flex-col align-middle justify-evenly bg-white px-7 py-12 gap-5 rounded-3xl mx-auto w-5/6 md:w-[500px]"
+        className="flex flex-col align-middle justify-evenly bg-white px-7 py-12 gap-5 rounded-3xl mx-auto w-11/12 md:w-[500px]"
         onSubmit={handleLogin}
       >
         <h1>Login to your account</h1>
