@@ -145,7 +145,7 @@ export default function Student() {
                   className={`${poppins.className} text-sm text-center space-y-1 mb-3`}
                 >
                   <p>Assignment Title: </p>
-                  <p className="font-bold">{row.judulAssignment}</p>
+                  <p className="font-bold">{row.namaAssignment}</p>
                 </div>
                 <hr className="bg-[#2E4F4F] w-full h-0.5"></hr>
                 <div className="flex flex-row justify-evenly text-xs text-center">
@@ -233,7 +233,7 @@ export default function Student() {
                     <td className="p-3">
                       {index + 1 + (currentPage - 1) * pageSize}.
                     </td>
-                    <td className="p-3">{row.judulAssignment}</td>
+                    <td className="p-3">{row.namaAssignment}</td>
                     <td className="p-3">{row.dateStart}</td>
                     <td className="p-3">{row.timeStart}</td>
                     <td className="p-3">{row.dateDeadline}</td>
